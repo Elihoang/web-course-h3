@@ -70,17 +70,30 @@ export const deleteUser = async (id) => {
 // Upload ảnh đại diện
 export const uploadProfileImage = async (file) => {
   const token = localStorage.getItem('authToken');
-  if (!token) {
-    throw new Error('Không tìm thấy token');
-  }
+  if (!token) throw new Error('Không tìm thấy token');
 
   const formData = new FormData();
   formData.append('file', file);
 
-  return await api.post(`${API_URL}/profile/upload-avatar`, formData, {
+  const decodedToken = JSON.parse(atob(token.split('.')[1])); // Giải mã JWT để lấy userId
+  const userId = decodedToken.id;
+
+  return await api.post(`${API_URL}/${userId}/upload-profile-image`, formData, {
     headers: {
       Authorization: `Bearer ${token}`,
       'Content-Type': 'multipart/form-data',
+    },
+  });
+};
+export const updateUserPassword = async (id, passwordData) => {
+  const token = localStorage.getItem('authToken');
+  if (!token) {
+    throw new Error('Không tìm thấy token');
+  }
+  return await api.put(`${API_URL}/${id}/password`, passwordData, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
     },
   });
 };
