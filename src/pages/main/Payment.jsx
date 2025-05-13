@@ -62,15 +62,17 @@ const PaymentModal = () => {
       CourseId: course.id,
       Amount: total,
       Status: 'Pending',
-      CreatedAt: new Date().toLocaleString('vi-VN', {
-        day: '2-digit',
-        month: '2-digit',
-        year: 'numeric',
-        hour: '2-digit',
-        minute: '2-digit',
-        second: '2-digit',
-        hour12: false,
-      }).replace(/,/, ''),
+      CreatedAt: new Date()
+        .toLocaleString('vi-VN', {
+          day: '2-digit',
+          month: '2-digit',
+          year: 'numeric',
+          hour: '2-digit',
+          minute: '2-digit',
+          second: '2-digit',
+          hour12: false,
+        })
+        .replace(/,/, ''),
     };
 
     console.log('Order data to be sent:', orderData);
@@ -97,7 +99,9 @@ const PaymentModal = () => {
     } catch (error) {
       console.error('Lỗi thanh toán:', error.response?.data || error.message);
       setErrorMessage(`Thanh toán thất bại: ${error.response?.data?.message || error.message}`);
-      navigate('/payment-failure', { state: { error: error.response?.data?.message || error.message } });
+      navigate('/payment-failure', {
+        state: { error: error.response?.data?.message || error.message },
+      });
     } finally {
       setIsLoading(false);
     }
@@ -120,7 +124,11 @@ const PaymentModal = () => {
           <div className="md:w-1/2 p-4">
             <div className="flex items-center space-x-3">
               <img
-                src={course.urlImage ? import.meta.env.VITE_API_URL+`/${course.urlImage}` : 'https://via.placeholder.com/50'}
+                src={
+                  course.urlImage
+                    ? import.meta.env.VITE_API_URL + `/${course.urlImage}`
+                    : 'https://via.placeholder.com/50'
+                }
                 alt={course.title}
                 className="w-12 h-12 rounded-full"
               />
@@ -134,15 +142,15 @@ const PaymentModal = () => {
           <h3 className="text-lg font-semibold text-center md:text-left">Chi tiết thanh toán</h3>
 
           {errorMessage && (
-            <div className="mt-3 p-2 bg-red-100 text-red-700 rounded">
-              {errorMessage}
-            </div>
+            <div className="mt-3 p-2 bg-red-100 text-red-700 rounded">{errorMessage}</div>
           )}
 
           <div className="mt-3">
             {course ? (
               <>
-                <p className="text-gray-700 font-semibold text-center md:text-left">{course.title}</p>
+                <p className="text-gray-700 font-semibold text-center md:text-left">
+                  {course.title}
+                </p>
                 <div className="flex justify-between text-sm md:text-base">
                   <p>Giá khuyến mãi:</p>
                   <p className="text-lg font-bold text-red-600">{total.toLocaleString()}đ</p>

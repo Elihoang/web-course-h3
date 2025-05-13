@@ -29,7 +29,7 @@ const Review = ({ courseId, reviews, isEnrolled, onReviewSubmitted }) => {
           const authToken = localStorage.getItem('authToken');
           if (authToken) {
             const decodedToken = jwtDecode(authToken);
-            const userReview = response.find(review => review.userId === decodedToken.id);
+            const userReview = response.find((review) => review.userId === decodedToken.id);
             if (userReview) {
               setExistingReview(userReview);
               setRating(userReview.rating);
@@ -61,7 +61,7 @@ const Review = ({ courseId, reviews, isEnrolled, onReviewSubmitted }) => {
     // Kiểm tra các trường bắt buộc
     if (!rating || !reviewText) {
       toast.error('Bạn cần chọn sao và nhập bình luận!', {
-        position: "top-right",
+        position: 'top-right',
         autoClose: 3000,
         hideProgressBar: false,
         closeOnClick: true,
@@ -76,7 +76,7 @@ const Review = ({ courseId, reviews, isEnrolled, onReviewSubmitted }) => {
 
     if (!authToken || authToken.split('.').length !== 3) {
       toast.error('Token không hợp lệ hoặc thiếu cấu trúc', {
-        position: "top-right",
+        position: 'top-right',
         autoClose: 3000,
         hideProgressBar: false,
         closeOnClick: true,
@@ -98,13 +98,11 @@ const Review = ({ courseId, reviews, isEnrolled, onReviewSubmitted }) => {
       if (existingReview) {
         // Update existing review
         response = await updateReview(existingReview.id, reviewData);
-        setDisplayReviews(prevReviews =>
-          prevReviews.map(review =>
-            review.id === existingReview.id ? response : review
-          )
+        setDisplayReviews((prevReviews) =>
+          prevReviews.map((review) => (review.id === existingReview.id ? response : review))
         );
         toast.success('Đánh giá đã được cập nhật thành công!', {
-          position: "top-right",
+          position: 'top-right',
           autoClose: 3000,
           hideProgressBar: false,
           closeOnClick: true,
@@ -114,10 +112,10 @@ const Review = ({ courseId, reviews, isEnrolled, onReviewSubmitted }) => {
       } else {
         // Create new review
         response = await createReview(reviewData);
-        setDisplayReviews(prevReviews => [...prevReviews, response]);
+        setDisplayReviews((prevReviews) => [...prevReviews, response]);
         setExistingReview(response);
         toast.success('Đánh giá đã được gửi thành công!', {
-          position: "top-right",
+          position: 'top-right',
           autoClose: 3000,
           hideProgressBar: false,
           closeOnClick: true,
@@ -132,17 +130,19 @@ const Review = ({ courseId, reviews, isEnrolled, onReviewSubmitted }) => {
       }
     } catch (error) {
       console.error('Lỗi khi gửi đánh giá:', error);
-      toast.error(error.message.includes('User has already submitted a review')
-        ? 'Bạn đã gửi đánh giá cho khóa học này rồi!'
-        : 'Lỗi khi gửi đánh giá.',
-      {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-      });
+      toast.error(
+        error.message.includes('User has already submitted a review')
+          ? 'Bạn đã gửi đánh giá cho khóa học này rồi!'
+          : 'Lỗi khi gửi đánh giá.',
+        {
+          position: 'top-right',
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+        }
+      );
     } finally {
       setIsSubmitting(false);
     }

@@ -35,7 +35,7 @@ export const addStudent = async (studentData) => {
     email: studentData.email,
     password: studentData.password,
     birthDate: studentData.birthDate,
-  }
+  };
 
   console.log('data: ', data);
 
@@ -64,7 +64,7 @@ export const updateStudent = async (studentId, studentData) => {
     fullName: studentData.fullName,
     email: studentData.email,
     birthDate: studentData.birthDate,
-  }
+  };
 
   try {
     const response = await api.put(`${API_URL}/${studentId}`, data, {
@@ -89,7 +89,7 @@ export const uploadAvatar = async (studentId, avatar) => {
 
   const data = {
     file: avatar,
-  }
+  };
 
   console.log('data: ', data);
 
@@ -161,7 +161,7 @@ export const getStudentsByStatus = async (status) => {
       },
     });
     return response.data;
-  } catch (error) { 
+  } catch (error) {
     console.error('Lỗi khi lấy danh sách học viên theo trạng thái:', error);
     throw error;
   }
@@ -175,7 +175,7 @@ export const getStudentsByCourse = async (courseId) => {
   }
 
   try {
-    const response = await api.get(`${API_URL}/course/${courseId}`, { 
+    const response = await api.get(`${API_URL}/course/${courseId}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },

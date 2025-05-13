@@ -28,7 +28,7 @@ import {
 } from 'recharts';
 
 import { getCourses } from '@/api/courseApi';
- 
+
 import { getEnrollments } from '@/api/enrollmentApi';
 
 const Dashboard = () => {

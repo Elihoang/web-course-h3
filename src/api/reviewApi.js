@@ -85,7 +85,7 @@ export const createReview = async (reviewData) => {
   try {
     const response = await api.post(`${API_URL}`, newData, {
       headers: {
-        'Authorization': `Bearer ${token}`,
+        Authorization: `Bearer ${token}`,
         'Content-Type': 'application/json',
       },
     });
@@ -114,7 +114,7 @@ export const updateReview = async (id, reviewData) => {
   try {
     const response = await api.put(`${API_URL}/${id}`, updatedData, {
       headers: {
-        'Authorization': `Bearer ${token}`,
+        Authorization: `Bearer ${token}`,
         'Content-Type': 'application/json',
       },
     });
@@ -135,7 +135,7 @@ export const deleteReview = async (id) => {
   try {
     const response = await api.delete(`${API_URL}/${id}`, {
       headers: {
-        'Authorization': `Bearer ${token}`,
+        Authorization: `Bearer ${token}`,
         'Content-Type': 'application/json',
       },
     });

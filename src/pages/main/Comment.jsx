@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Send } from 'lucide-react';
-import { getCommentsByPostId, createComment, updateComment } from '../../api/commentApi'; 
+import { getCommentsByPostId, createComment, updateComment } from '../../api/commentApi';
 import { jwtDecode } from 'jwt-decode';
 import { toast } from 'react-toastify';
 
@@ -14,14 +14,14 @@ const CommentPost = ({ postId }) => {
     console.log(postId);
     const fetchPostComments = async () => {
       try {
-        const postComments = await getCommentsByPostId(postId); 
+        const postComments = await getCommentsByPostId(postId);
         console.log(postComments);
         setComments(postComments);
 
         const authToken = localStorage.getItem('authToken');
         if (authToken) {
           const decodedToken = jwtDecode(authToken);
-          const userComment = postComments.find(comment => comment.userId === decodedToken.id);
+          const userComment = postComments.find((comment) => comment.userId === decodedToken.id);
           if (userComment) {
             setExistingComment(userComment);
             setCommentText(userComment.content);
@@ -64,16 +64,14 @@ const CommentPost = ({ postId }) => {
       if (existingComment) {
         // Cập nhật bình luận hiện có
         response = await updateComment(existingComment.id, commentData);
-        setComments(prevComments =>
-          prevComments.map(comment =>
-            comment.id === existingComment.id ? response : comment
-          )
+        setComments((prevComments) =>
+          prevComments.map((comment) => (comment.id === existingComment.id ? response : comment))
         );
         toast.success('Bình luận đã được cập nhật thành công!');
       } else {
         // Tạo bình luận mới
         response = await createComment(commentData);
-        setComments(prevComments => [...prevComments, response]);
+        setComments((prevComments) => [...prevComments, response]);
         setExistingComment(response);
         toast.success('Bình luận đã được gửi thành công!');
       }
@@ -109,29 +107,36 @@ const CommentPost = ({ postId }) => {
       </button>
 
       {/* Hiển thị tất cả bình luận của bài viết */}
-   {/* Hiển thị tất cả bình luận của bài viết */}
-        {comments.length > 0 && (
-          <div className="mt-8">
-            <h4 className="text-xl font-semibold mb-6 border-b pb-2 text-gray-800">Bình luận của người dùng</h4>
-            <div className="space-y-6">
-              {comments.map((comment, idx) => (
-                <div key={idx} className="bg-gray-50 p-4 rounded-lg shadow-sm">
-                  <div className="flex items-center justify-between mb-2">
-                    <div className="flex items-center space-x-3">
-                      <img
-                        src={import.meta.env.VITE_API_URL + comment.userAvatar || 'https://avatar.iran.liara.run/public/30'}
-                        alt="avatar"
-                        className="w-10 h-10 rounded-full object-cover"
-                      />
-                      <span className="font-medium text-gray-900">{comment.userName || 'Ẩn danh'}</span>
-                    </div>
-                    <span className="text-sm text-gray-500">
-                      {new Date(comment.createdAt).toLocaleString('vi-VN')}
+      {/* Hiển thị tất cả bình luận của bài viết */}
+      {comments.length > 0 && (
+        <div className="mt-8">
+          <h4 className="text-xl font-semibold mb-6 border-b pb-2 text-gray-800">
+            Bình luận của người dùng
+          </h4>
+          <div className="space-y-6">
+            {comments.map((comment, idx) => (
+              <div key={idx} className="bg-gray-50 p-4 rounded-lg shadow-sm">
+                <div className="flex items-center justify-between mb-2">
+                  <div className="flex items-center space-x-3">
+                    <img
+                      src={
+                        import.meta.env.VITE_API_URL + comment.userAvatar ||
+                        'https://avatar.iran.liara.run/public/30'
+                      }
+                      alt="avatar"
+                      className="w-10 h-10 rounded-full object-cover"
+                    />
+                    <span className="font-medium text-gray-900">
+                      {comment.userName || 'Ẩn danh'}
                     </span>
                   </div>
-                  <p className="text-gray-700 whitespace-pre-line">{comment.content}</p>
+                  <span className="text-sm text-gray-500">
+                    {new Date(comment.createdAt).toLocaleString('vi-VN')}
+                  </span>
                 </div>
-              ))}
+                <p className="text-gray-700 whitespace-pre-line">{comment.content}</p>
+              </div>
+            ))}
           </div>
         </div>
       )}

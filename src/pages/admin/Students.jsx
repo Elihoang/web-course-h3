@@ -371,7 +371,12 @@ const Students = () => {
             </div>
             <p className="text-sm text-gray-500 mt-1">Học viên đang theo học</p>
             <div className="w-full bg-gray-200 rounded-full h-2.5 mt-2">
-              <div className="bg-green-500 h-2.5 rounded-full" style={{width: `${(students.filter((s) => s.status === 'active').length / students.length) * 100}%`}}></div>
+              <div
+                className="bg-green-500 h-2.5 rounded-full"
+                style={{
+                  width: `${(students.filter((s) => s.status === 'active').length / students.length) * 100}%`,
+                }}
+              ></div>
             </div>
           </CardContent>
         </Card>
@@ -385,19 +390,26 @@ const Students = () => {
             </div>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-blue-500">{students.filter((s) => s.isOnline).length}</div>
+            <div className="text-2xl font-bold text-blue-500">
+              {students.filter((s) => s.isOnline).length}
+            </div>
             <p className="text-sm text-gray-500 mt-1">Học viên đang trực tuyến</p>
             <div className="mt-2 flex items-center space-x-2">
               <div className="flex -space-x-2">
-                {students.filter((s) => s.isOnline).slice(0,3).map((student, index) => (
-                  <Avatar key={index} className="border-2 border-white w-6 h-6">
-                    <AvatarImage src={`${API_URL}/${student.profileImage}`} />
-                    <AvatarFallback>{student.fullName?.charAt(0)}</AvatarFallback>
-                  </Avatar>
-                ))}
+                {students
+                  .filter((s) => s.isOnline)
+                  .slice(0, 3)
+                  .map((student, index) => (
+                    <Avatar key={index} className="border-2 border-white w-6 h-6">
+                      <AvatarImage src={`${API_URL}/${student.profileImage}`} />
+                      <AvatarFallback>{student.fullName?.charAt(0)}</AvatarFallback>
+                    </Avatar>
+                  ))}
               </div>
               {students.filter((s) => s.isOnline).length > 3 && (
-                <span className="text-sm text-gray-500">+{students.filter((s) => s.isOnline).length - 3} khác</span>
+                <span className="text-sm text-gray-500">
+                  +{students.filter((s) => s.isOnline).length - 3} khác
+                </span>
               )}
             </div>
           </CardContent>

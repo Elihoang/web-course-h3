@@ -4,7 +4,7 @@ import api from './axios';
 const API_URL = '/order';
 
 // Lấy tất cả đơn hàng (giả định cần thêm endpoint GET /api/order trong backend)
-export const getAllOrders = async ({pageNumber=1, pageSize=10}) => {
+export const getAllOrders = async ({ pageNumber = 1, pageSize = 10 }) => {
   const token = localStorage.getItem('authToken');
   if (!token) {
     throw new Error('Không tìm thấy token');
@@ -14,8 +14,7 @@ export const getAllOrders = async ({pageNumber=1, pageSize=10}) => {
   queryParams.append('pageNumber', pageNumber);
   queryParams.append('pageSize', pageSize);
   try {
-    const response = await api.get(`${API_URL}?${queryParams.toString()}`, 
-    {
+    const response = await api.get(`${API_URL}?${queryParams.toString()}`, {
       headers: {
         Authorization: `Bearer ${token}`,
         'Content-Type': 'application/json',
@@ -45,7 +44,10 @@ export const getOrdersByUserId = async (userId) => {
     console.log(`Orders for user ${userId}:`, response.data);
     return response.data;
   } catch (error) {
-    console.error(`Lỗi khi lấy đơn hàng cho user ${userId}:`, error.response?.data || error.message);
+    console.error(
+      `Lỗi khi lấy đơn hàng cho user ${userId}:`,
+      error.response?.data || error.message
+    );
     throw error;
   }
 };
@@ -66,7 +68,10 @@ export const getOrderDetailsById = async (orderId) => {
     console.log(`Order details for ${orderId}:`, response.data);
     return response.data;
   } catch (error) {
-    console.error(`Lỗi khi lấy chi tiết đơn hàng ${orderId}:`, error.response?.data || error.message);
+    console.error(
+      `Lỗi khi lấy chi tiết đơn hàng ${orderId}:`,
+      error.response?.data || error.message
+    );
     throw error;
   }
 };
@@ -100,12 +105,12 @@ export const createOrder = async (data) => {
   }
 
   const decodedToken = jwtDecode(token);
-  
+
   const newData = {
-    userId: decodedToken.id, 
+    userId: decodedToken.id,
     courseId: data.courseId,
     amount: data.amount,
-    status: 'Pending', 
+    status: 'Pending',
   };
 
   try {
@@ -139,7 +144,10 @@ export const updateOrderStatus = async (orderId, status) => {
     });
     return response.data;
   } catch (error) {
-    console.error(`Lỗi khi cập nhật trạng thái đơn hàng ${orderId}:`, error.response?.data || error.message);
+    console.error(
+      `Lỗi khi cập nhật trạng thái đơn hàng ${orderId}:`,
+      error.response?.data || error.message
+    );
     throw error;
   }
 };

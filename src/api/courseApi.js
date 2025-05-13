@@ -33,21 +33,21 @@ export const createCourse = async (data) => {
   }
 
   const decodedToken = jwtDecode(token);
-  
+
   const newData = {
     title: data.title,
-    description: data.description, 
+    description: data.description,
     price: data.price,
     instructorId: decodedToken.id,
-    contents: data.contents.split('\n').filter(line => line.trim() !== '')
+    contents: data.contents.split('\n').filter((line) => line.trim() !== ''),
   };
   console.log('New Data: ', newData);
   try {
     const response = await api.post(`${API_URL}`, newData, {
       headers: {
-        'Authorization': `Bearer ${token}`,
+        Authorization: `Bearer ${token}`,
         'Content-Type': 'application/json',
-      }
+      },
     });
     return response.data;
   } catch (error) {
@@ -69,14 +69,14 @@ export const updateCourse = async (id, data) => {
     description: data.description,
     price: data.price,
     instructorId: decodedToken.id,
-    contents: data.contents.split('\n').filter((line) => line.trim() !== '')
-  }
+    contents: data.contents.split('\n').filter((line) => line.trim() !== ''),
+  };
   try {
     const response = await api.put(`${API_URL}/${id}`, updatedData, {
       headers: {
-        'Authorization': `Bearer ${token}`,
+        Authorization: `Bearer ${token}`,
         'Content-Type': 'application/json',
-      }
+      },
     });
     return response.data;
   } catch (error) {
@@ -93,9 +93,9 @@ export const deleteCourse = async (id) => {
   try {
     const response = await api.delete(`${API_URL}/${id}`, {
       headers: {
-        'Authorization': `Bearer ${token}`,
+        Authorization: `Bearer ${token}`,
         'Content-Type': 'application/json',
-      }
+      },
     });
     return response.data;
   } catch (error) {
@@ -110,21 +110,30 @@ export const uploadImage = async (id, urlImage) => {
     throw new Error('Không tìm thấy token');
   }
 
-  const data = 
-  {
-    file: urlImage
-  }
-  
+  const data = {
+    file: urlImage,
+  };
+
   try {
     const response = await api.post(`${API_URL}/upload-image/${id}`, data, {
       headers: {
         'Content-Type': 'multipart/form-data',
-        'Authorization': `Bearer ${token}`
-      }
+        Authorization: `Bearer ${token}`,
+      },
     });
     return response.data;
   } catch (error) {
     console.error('Lỗi khi tải lên hình ảnh:', error);
+    throw error;
+  }
+};
+
+export const getCourseByInstructorId = async (instructorId) => {
+  try {
+    const response = await api.get(`${API_URL}/instructor/${instructorId}`);
+    return response.data;
+  } catch (error) {
+    console.error('Lỗi khi lấy khóa học theo ID giảng viên:', error);
     throw error;
   }
 };

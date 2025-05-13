@@ -16,7 +16,14 @@ import {
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout, setUser, setIsLoggedIn, setToken } from '@/reducers/authReducer';
-import { forgotPassword, login, register, resetPassword, getUserProfile, logout as logoutApi } from '../api/authApi';
+import {
+  forgotPassword,
+  login,
+  register,
+  resetPassword,
+  getUserProfile,
+  logout as logoutApi,
+} from '../api/authApi';
 import CoursePopup from './CoursePopup';
 
 const Header = () => {
@@ -27,7 +34,11 @@ const Header = () => {
   // State for form data
   const [loginData, setLoginData] = useState({ email: '', password: '' });
   const [registerData, setRegisterData] = useState({ fullName: '', email: '', password: '' });
-  const [resetPasswordData, setResetPasswordData] = useState({ email: '', resetCode: '', newPassword: '' });
+  const [resetPasswordData, setResetPasswordData] = useState({
+    email: '',
+    resetCode: '',
+    newPassword: '',
+  });
   const [forgotEmail, setForgotEmail] = useState('');
 
   // UI state
@@ -99,9 +110,12 @@ const Header = () => {
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (loginRef.current && !loginRef.current.contains(event.target)) setIsLoginOpen(false);
-      if (registerRef.current && !registerRef.current.contains(event.target)) setIsRegisterOpen(false);
-      if (forgotPasswordRef.current && !forgotPasswordRef.current.contains(event.target)) setIsForgotPasswordOpen(false);
-      if (searchRef.current && !searchRef.current.contains(event.target)) setIsSearchDropdownOpen(false);
+      if (registerRef.current && !registerRef.current.contains(event.target))
+        setIsRegisterOpen(false);
+      if (forgotPasswordRef.current && !forgotPasswordRef.current.contains(event.target))
+        setIsForgotPasswordOpen(false);
+      if (searchRef.current && !searchRef.current.contains(event.target))
+        setIsSearchDropdownOpen(false);
     };
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
@@ -215,13 +229,21 @@ const Header = () => {
 
   // Handle reset password
   const handleResetPassword = async () => {
-    if (!resetPasswordData.email || !resetPasswordData.resetCode || !resetPasswordData.newPassword) {
+    if (
+      !resetPasswordData.email ||
+      !resetPasswordData.resetCode ||
+      !resetPasswordData.newPassword
+    ) {
       toast.error('Vui lòng nhập đầy đủ thông tin!');
       return;
     }
     setLoading(true);
     try {
-      await resetPassword(resetPasswordData.email, resetPasswordData.resetCode, resetPasswordData.newPassword);
+      await resetPassword(
+        resetPasswordData.email,
+        resetPasswordData.resetCode,
+        resetPasswordData.newPassword
+      );
       toast.success('Mật khẩu đã được đặt lại thành công!');
       setTimeout(() => {
         setIsResetPasswordOpen(false);
@@ -260,7 +282,10 @@ const Header = () => {
         <a href="/" className="rounded-lg">
           <img className="rounded-lg" src={LogoH3} alt="Logo H3" width={38} height={38} />
         </a>
-        <a className="font-semibold text-base text-black hover:text-pink-600 hidden md:block" href="/">
+        <a
+          className="font-semibold text-base text-black hover:text-pink-600 hidden md:block"
+          href="/"
+        >
           Học Lập Trình Cùng H3
         </a>
       </h1>
@@ -274,9 +299,7 @@ const Header = () => {
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
         />
-        <FaSearch
-          className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 cursor-pointer"
-        />
+        <FaSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 cursor-pointer" />
 
         {/* Search Dropdown */}
         {isSearchDropdownOpen && (
@@ -380,7 +403,9 @@ const Header = () => {
                       </Avatar>
                       <div>
                         <p className="font-semibold">{user?.fullName || 'Người dùng'}</p>
-                        <p className="text-gray-500 text-sm break-words">{user?.email || 'email'}</p>
+                        <p className="text-gray-500 text-sm break-words">
+                          {user?.email || 'email'}
+                        </p>
                       </div>
                     </div>
                     <hr />
@@ -435,7 +460,10 @@ const Header = () => {
       {/* Popup Login */}
       {isLoginOpen && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-          <div className="bg-white shadow-lg rounded-lg p-6 w-full mx-4 md:max-w-xl max-w-sm relative h-[500px] md:h-[550px]" ref={loginRef}>
+          <div
+            className="bg-white shadow-lg rounded-lg p-6 w-full mx-4 md:max-w-xl max-w-sm relative h-[500px] md:h-[550px]"
+            ref={loginRef}
+          >
             <div className="flex justify-center mb-4 mt-4">
               <img src={LogoH3} alt="Logo H3" className="h-10 rounded-lg" />
             </div>
@@ -530,7 +558,10 @@ const Header = () => {
       {/* Popup Register */}
       {isRegisterOpen && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-          <div className="bg-white shadow-lg rounded-lg p-6 w-full mx-4 md:max-w-xl max-w-sm relative h-[500px] md:h-[550px]" ref={registerRef}>
+          <div
+            className="bg-white shadow-lg rounded-lg p-6 w-full mx-4 md:max-w-xl max-w-sm relative h-[500px] md:h-[550px]"
+            ref={registerRef}
+          >
             <div className="flex justify-center mb-4 mt-4">
               <img src={LogoH3} alt="Logo H3" className="h-10 rounded-lg" />
             </div>
@@ -620,7 +651,10 @@ const Header = () => {
       {/* Popup Forgot Password */}
       {isForgotPasswordOpen && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-          <div ref={forgotPasswordRef} className="bg-white shadow-lg rounded-lg p-6 w-full mx-4 md:max-w-xl max-w-sm relative">
+          <div
+            ref={forgotPasswordRef}
+            className="bg-white shadow-lg rounded-lg p-6 w-full mx-4 md:max-w-xl max-w-sm relative"
+          >
             <button
               className="absolute top-2 right-2 text-gray-600 hover:text-red-500"
               onClick={() => setIsForgotPasswordOpen(false)}
@@ -665,7 +699,9 @@ const Header = () => {
                 type="email"
                 placeholder="Nhập email"
                 value={resetPasswordData.email}
-                onChange={(e) => setResetPasswordData({ ...resetPasswordData, email: e.target.value })}
+                onChange={(e) =>
+                  setResetPasswordData({ ...resetPasswordData, email: e.target.value })
+                }
                 className="w-full px-9 py-2 border rounded-lg focus:ring-2 focus:ring-pink-500"
               />
             </div>
@@ -675,7 +711,9 @@ const Header = () => {
                 type="text"
                 placeholder="Nhập mã xác nhận"
                 value={resetPasswordData.resetCode}
-                onChange={(e) => setResetPasswordData({ ...resetPasswordData, resetCode: e.target.value })}
+                onChange={(e) =>
+                  setResetPasswordData({ ...resetPasswordData, resetCode: e.target.value })
+                }
                 className="w-full px-9 py-2 border rounded-lg focus:ring-2 focus:ring-pink-500"
               />
             </div>
@@ -685,7 +723,9 @@ const Header = () => {
                 type={showNewPassword ? 'text' : 'password'}
                 placeholder="Nhập mật khẩu mới"
                 value={resetPasswordData.newPassword}
-                onChange={(e) => setResetPasswordData({ ...resetPasswordData, newPassword: e.target.value })}
+                onChange={(e) =>
+                  setResetPasswordData({ ...resetPasswordData, newPassword: e.target.value })
+                }
                 className="w-full px-9 py-2 border rounded-lg focus:ring-2 focus:ring-pink-500"
               />
               <button

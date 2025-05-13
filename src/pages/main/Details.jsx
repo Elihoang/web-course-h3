@@ -60,7 +60,7 @@ const Details = () => {
         const lessonsByChapter = await Promise.all(
           data.map(async (chapter) => {
             const chapterLessons = await getLessonsByChapterId(chapter.id);
-            return chapterLessons.map(lesson => ({ ...lesson, chapterId: chapter.id }));
+            return chapterLessons.map((lesson) => ({ ...lesson, chapterId: chapter.id }));
           })
         );
         const allLessons = lessonsByChapter.flat();

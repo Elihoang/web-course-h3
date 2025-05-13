@@ -80,13 +80,16 @@ export const getCommentsByPostId = async (postId) => {
         Authorization: `Bearer ${token}`,
       },
       params: {
-        postId: postId, 
+        postId: postId,
       },
     });
     console.log('Dữ liệu trả về:', response.data);
     return response.data;
   } catch (error) {
-    console.error(`Lỗi khi lấy bình luận theo postId ${postId}:`, error.response?.data || error.message);
+    console.error(
+      `Lỗi khi lấy bình luận theo postId ${postId}:`,
+      error.response?.data || error.message
+    );
     throw error;
   }
 };
@@ -99,7 +102,7 @@ export const createComment = async (commentData) => {
       API_URL,
       {
         userId: userId, // Gửi userId từ token
-        ...commentData,  // Các trường khác như content, courseId, v.v.
+        ...commentData, // Các trường khác như content, courseId, v.v.
       },
       {
         headers: {
@@ -122,16 +125,12 @@ export const createComment = async (commentData) => {
 export const updateComment = async (id, commentData) => {
   const token = getAuthToken();
   try {
-    const response = await api.put(
-      `${API_URL}/${id}`,
-      commentData,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json',
-        },
-      }
-    );
+    const response = await api.put(`${API_URL}/${id}`, commentData, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+    });
     return response.data;
   } catch (error) {
     console.error(`Lỗi khi cập nhật bình luận ID ${id}:`, error);

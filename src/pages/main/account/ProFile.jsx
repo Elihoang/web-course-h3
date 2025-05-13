@@ -1,7 +1,21 @@
 /* eslint-disable react/prop-types */
-import { FaEnvelope, FaPhone, FaEdit, FaTimes, FaBirthdayCake, FaCamera, FaLock, FaCalendar } from 'react-icons/fa';
+import {
+  FaEnvelope,
+  FaPhone,
+  FaEdit,
+  FaTimes,
+  FaBirthdayCake,
+  FaCamera,
+  FaLock,
+  FaCalendar,
+} from 'react-icons/fa';
 import { useState, useEffect, useCallback } from 'react';
-import { getUserById, uploadProfileImage, updateUser, updateUserPassword } from '../../../api/userApi';
+import {
+  getUserById,
+  uploadProfileImage,
+  updateUser,
+  updateUserPassword,
+} from '../../../api/userApi';
 import { toast } from 'react-toastify';
 import { jwtDecode } from 'jwt-decode';
 
@@ -46,8 +60,10 @@ const ProfilePage = () => {
   const validateInfoForm = () => {
     const errors = {};
     if (!infoForm.fullName.trim()) errors.fullName = 'Họ và tên không được để trống';
-    if (!infoForm.email.trim() || !/\S+@\S+\.\S+/.test(infoForm.email)) errors.email = 'Email không hợp lệ';
-    if (infoForm.phone && !/^\+?\d{9,12}$/.test(infoForm.phone)) errors.phone = 'Số điện thoại không hợp lệ';
+    if (!infoForm.email.trim() || !/\S+@\S+\.\S+/.test(infoForm.email))
+      errors.email = 'Email không hợp lệ';
+    if (infoForm.phone && !/^\+?\d{9,12}$/.test(infoForm.phone))
+      errors.phone = 'Số điện thoại không hợp lệ';
     setFormErrors(errors);
     return Object.keys(errors).length === 0;
   };
@@ -82,12 +98,16 @@ const ProfilePage = () => {
         fullName: userData.fullName || '',
         email: userData.email || '',
         phone: userData.phone || '',
-        birthDate: userData.birthDate ? new Date(userData.birthDate).toISOString().slice(0, 10) : '',
+        birthDate: userData.birthDate
+          ? new Date(userData.birthDate).toISOString().slice(0, 10)
+          : '',
         profileImage: userData.profileImage || null,
       });
     } catch (err) {
       console.error('Lỗi khi lấy dữ liệu người dùng:', err);
-      setError(err.response?.data?.message || 'Không thể tải dữ liệu người dùng. Vui lòng thử lại sau.');
+      setError(
+        err.response?.data?.message || 'Không thể tải dữ liệu người dùng. Vui lòng thử lại sau.'
+      );
     } finally {
       setIsLoading(false);
     }
@@ -136,10 +156,13 @@ const ProfilePage = () => {
       });
     } catch (err) {
       console.error('Lỗi khi cập nhật thông tin:', err);
-      toast.error(err.response?.data?.message || 'Không thể cập nhật thông tin. Vui lòng thử lại sau.', {
-        position: 'top-right',
-        autoClose: 3000,
-      });
+      toast.error(
+        err.response?.data?.message || 'Không thể cập nhật thông tin. Vui lòng thử lại sau.',
+        {
+          position: 'top-right',
+          autoClose: 3000,
+        }
+      );
     } finally {
       setIsLoading(false);
     }
@@ -276,7 +299,9 @@ const ProfilePage = () => {
           {/* Avatar + Tên */}
           <div className="w-full md:w-1/3 text-center mb-6 md:mb-0">
             <ProfileImage
-              src={user?.profileImage ? `${import.meta.env.VITE_API_URL}${user.profileImage}` : null}
+              src={
+                user?.profileImage ? `${import.meta.env.VITE_API_URL}${user.profileImage}` : null
+              }
               alt="Profile"
               onClick={() => setIsModalOpen(true)}
               onImageChange={handleImageChange}
@@ -286,20 +311,19 @@ const ProfilePage = () => {
             </h1>
             <p className="text-gray-600 text-sm sm:text-base">{user?.role || 'Người dùng'}</p>
             <div className="flex justify-center mt-3 sm:mt-4 gap-3">
-                <button
-                  className="bg-pink-600 text-white text-sm px-3 py-1.5 rounded-md hover:bg-pink-700 transition-colors duration-300 flex items-center gap-1.5"
-                  onClick={() => setIsEditInfoModalOpen(true)}
-                >
-                  <FaEdit className="text-sm" /> Chỉnh sửa
-                </button>
-                <button
-                  className="bg-blue-600 text-white text-sm px-3 py-1.5 rounded-md hover:bg-blue-700 transition-colors duration-300 flex items-center gap-1.5"
-                  onClick={() => setIsEditPasswordModalOpen(true)}
-                >
-                  <FaLock className="text-sm" /> Mật khẩu
-                </button>
-              </div>
-
+              <button
+                className="bg-pink-600 text-white text-sm px-3 py-1.5 rounded-md hover:bg-pink-700 transition-colors duration-300 flex items-center gap-1.5"
+                onClick={() => setIsEditInfoModalOpen(true)}
+              >
+                <FaEdit className="text-sm" /> Chỉnh sửa
+              </button>
+              <button
+                className="bg-blue-600 text-white text-sm px-3 py-1.5 rounded-md hover:bg-blue-700 transition-colors duration-300 flex items-center gap-1.5"
+                onClick={() => setIsEditPasswordModalOpen(true)}
+              >
+                <FaLock className="text-sm" /> Mật khẩu
+              </button>
+            </div>
           </div>
 
           {/* Thông tin chi tiết */}
@@ -316,10 +340,7 @@ const ProfilePage = () => {
                       : 'Chưa có ngày sinh'
                   }
                 />
-                <ContactItem
-                  icon={<FaCalendar />}
-                  text={formatCreatedAt(user?.createdAt)}
-                />
+                <ContactItem icon={<FaCalendar />} text={formatCreatedAt(user?.createdAt)} />
               </ul>
             </Section>
           </div>
@@ -331,7 +352,11 @@ const ProfilePage = () => {
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-75 p-4 z-50">
           <div className="relative w-full max-w-xs sm:max-w-md">
             <img
-              src={user?.profileImage ? `${import.meta.env.VITE_API_URL}${user.profileImage}` : 'https://i.pravatar.cc/600'}
+              src={
+                user?.profileImage
+                  ? `${import.meta.env.VITE_API_URL}${user.profileImage}`
+                  : 'https://i.pravatar.cc/600'
+              }
               alt="Profile Enlarged"
               className="rounded-lg shadow-2xl w-full"
               loading="lazy"
@@ -350,7 +375,9 @@ const ProfilePage = () => {
       {isEditInfoModalOpen && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-75 p-4 z-50">
           <div className="bg-white rounded-xl w-full max-w-3xl p-6">
-            <h2 className="text-2xl font-bold text-pink-500 mb-6 text-center">Chỉnh sửa thông tin</h2>
+            <h2 className="text-2xl font-bold text-pink-500 mb-6 text-center">
+              Chỉnh sửa thông tin
+            </h2>
             <form onSubmit={handleEditInfoSubmit}>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {/* Họ và tên */}
@@ -364,7 +391,9 @@ const ProfilePage = () => {
                     className={`w-full border rounded-lg p-2 ${formErrors.fullName ? 'border-red-500' : ''}`}
                     required
                   />
-                  {formErrors.fullName && <p className="text-red-500 text-sm">{formErrors.fullName}</p>}
+                  {formErrors.fullName && (
+                    <p className="text-red-500 text-sm">{formErrors.fullName}</p>
+                  )}
                 </div>
 
                 {/* Email */}
@@ -459,7 +488,9 @@ const ProfilePage = () => {
                     className={`w-full border rounded-lg p-2 ${formErrors.password ? 'border-red-500' : ''}`}
                     required
                   />
-                  {formErrors.password && <p className="text-red-500 text-sm">{formErrors.password}</p>}
+                  {formErrors.password && (
+                    <p className="text-red-500 text-sm">{formErrors.password}</p>
+                  )}
                 </div>
 
                 {/* Xác nhận mật khẩu */}

@@ -13,7 +13,9 @@ import PostManagement from '../pages/admin/PostManagement';
 const AdminRoutes = {
   path: '/admin',
   element: (
-    <ProtectedRoute> 
+    <ProtectedRoute allowedRoles={['Admin']}>
+      {' '}
+      {/* Chỉ cho phép người dùng có vai trò Admin */}
       <AdminLayout />
     </ProtectedRoute>
   ),

@@ -21,12 +21,7 @@ import { toast } from 'react-toastify';
 import { Pencil, Trash2, Plus, Search, Loader2 } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import {
-  getComments,
-  createComment,
-  deleteComment,
-  getCommentById,
-} from '@/api/commentApi'; // Xóa updateComment vì không dùng
+import { getComments, createComment, deleteComment, getCommentById } from '@/api/commentApi'; // Xóa updateComment vì không dùng
 
 const Comment = () => {
   const [comments, setComments] = useState([]);
@@ -175,10 +170,7 @@ const Comment = () => {
                 />
               </div>
               {!editingComment && (
-                <Button
-                  type="submit"
-                  className="w-full bg-pink-500 hover:bg-pink-600"
-                >
+                <Button type="submit" className="w-full bg-pink-500 hover:bg-pink-600">
                   Thêm mới
                 </Button>
               )}
@@ -205,7 +197,19 @@ const Comment = () => {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold text-green-500">
-              {comments.filter((c) => c.createdAt.startsWith(new Date().toLocaleDateString('vi-VN', { day: '2-digit', month: '2-digit', year: 'numeric' }).replace(/\//g, '-'))).length}
+              {
+                comments.filter((c) =>
+                  c.createdAt.startsWith(
+                    new Date()
+                      .toLocaleDateString('vi-VN', {
+                        day: '2-digit',
+                        month: '2-digit',
+                        year: 'numeric',
+                      })
+                      .replace(/\//g, '-')
+                  )
+                ).length
+              }
             </div>
             <p className="text-sm text-gray-500 mt-1">Số bình luận trong ngày</p>
           </CardContent>
@@ -251,11 +255,13 @@ const Comment = () => {
                   <TableHead className="text-pink-500">Bài viết (ID)</TableHead>
                   <TableHead className="text-pink-500">Nội dung</TableHead>
                   <TableHead className="text-pink-500">Thời gian tạo</TableHead>
-                  <TableHead className="text-pink-700 font-semibold text-center">Thao tác</TableHead>
+                  <TableHead className="text-pink-700 font-semibold text-center">
+                    Thao tác
+                  </TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
-               {filteredComments.map((comment) => (
+                {filteredComments.map((comment) => (
                   <TableRow key={comment.id}>
                     <TableCell>{comment.userName}</TableCell>
                     <TableCell>{comment.postTitle}</TableCell>

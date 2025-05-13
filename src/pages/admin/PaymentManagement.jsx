@@ -23,8 +23,8 @@ import {
 import { Input } from '@/components/ui/input';
 
 // Import các icons
-import { 
-  Loader2, 
+import {
+  Loader2,
   Search,
   Filter,
   Download,
@@ -32,7 +32,7 @@ import {
   ChevronLeft,
   ChevronRight,
   X,
-  Trash2
+  Trash2,
 } from 'lucide-react';
 
 import { getAllOrders, updateOrderStatus, deleteOrder } from '@/api/orderApi';
@@ -66,18 +66,18 @@ const PaymentManagement = () => {
   };
 
   const handleStatusChange = async (orderId, newStatus) => {
-  try {
-    await updateOrderStatus(orderId, newStatus);
-    setOrders(orders.map(order => 
-      order.id === orderId ? { ...order, status: newStatus } : order
-    ));
-    toast.success('Cập nhật trạng thái thành công');
-  } catch (error) {
-    const errorMessage = error.response?.data || 'Cập nhật trạng thái thất bại';
-    toast.error(`Lỗi: ${errorMessage}`);
-    console.error('Error:', error);
-  }
-};
+    try {
+      await updateOrderStatus(orderId, newStatus);
+      setOrders(
+        orders.map((order) => (order.id === orderId ? { ...order, status: newStatus } : order))
+      );
+      toast.success('Cập nhật trạng thái thành công');
+    } catch (error) {
+      const errorMessage = error.response?.data || 'Cập nhật trạng thái thất bại';
+      toast.error(`Lỗi: ${errorMessage}`);
+      console.error('Error:', error);
+    }
+  };
 
   const handleDeleteOrder = async (orderId) => {
     if (!window.confirm('Bạn có chắc muốn xóa đơn hàng này?')) {
@@ -85,7 +85,7 @@ const PaymentManagement = () => {
     }
     try {
       await deleteOrder(orderId);
-      setOrders(orders.filter(order => order.id !== orderId));
+      setOrders(orders.filter((order) => order.id !== orderId));
       toast.success('Xóa đơn hàng thành công');
     } catch (error) {
       toast.error('Xóa đơn hàng thất bại');
@@ -93,16 +93,18 @@ const PaymentManagement = () => {
     }
   };
 
-  const filteredOrders = orders.filter(order => {
-    const matchesSearch = (order.userName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                          order.courseName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                          order.userId.toString().toLowerCase().includes(searchTerm.toLowerCase()) ||
-                          order.courseId.toString().toLowerCase().includes(searchTerm.toLowerCase()));
+  const filteredOrders = orders.filter((order) => {
+    const matchesSearch =
+      order.userName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      order.courseName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      order.userId.toString().toLowerCase().includes(searchTerm.toLowerCase()) ||
+      order.courseId.toString().toLowerCase().includes(searchTerm.toLowerCase());
     const matchesStatus = statusFilter === 'all' || order.status.toLowerCase() === statusFilter;
-    const matchesDate = dateFilter === 'all' || 
-                        (dateFilter === 'today' && isToday(order.createdAt)) ||
-                        (dateFilter === 'week' && isThisWeek(order.createdAt)) ||
-                        (dateFilter === 'month' && isThisMonth(order.createdAt));
+    const matchesDate =
+      dateFilter === 'all' ||
+      (dateFilter === 'today' && isToday(order.createdAt)) ||
+      (dateFilter === 'week' && isThisWeek(order.createdAt)) ||
+      (dateFilter === 'month' && isThisMonth(order.createdAt));
     return matchesSearch && matchesStatus && matchesDate;
   });
 
@@ -123,8 +125,9 @@ const PaymentManagement = () => {
   const isThisMonth = (date) => {
     const today = new Date();
     const orderDate = new Date(date);
-    return orderDate.getMonth() === today.getMonth() && 
-           orderDate.getFullYear() === today.getFullYear();
+    return (
+      orderDate.getMonth() === today.getMonth() && orderDate.getFullYear() === today.getFullYear()
+    );
   };
 
   const getStatusBadge = (status) => {
@@ -145,7 +148,7 @@ const PaymentManagement = () => {
   const formatCurrency = (amount) => {
     return new Intl.NumberFormat('vi-VN', {
       style: 'currency',
-      currency: 'VND'
+      currency: 'VND',
     }).format(amount);
   };
 
@@ -155,7 +158,7 @@ const PaymentManagement = () => {
       month: '2-digit',
       year: 'numeric',
       hour: '2-digit',
-      minute: '2-digit'
+      minute: '2-digit',
     });
   };
 
@@ -261,18 +264,22 @@ const PaymentManagement = () => {
                   <TableCell className="truncate max-w-[150px]" title={order.id}>
                     {order.id}
                   </TableCell>
-                  <TableCell className="truncate max-w-[200px]" title={order.userName || order.userId}>
+                  <TableCell
+                    className="truncate max-w-[200px]"
+                    title={order.userName || order.userId}
+                  >
                     {order.userName || order.userId}
                   </TableCell>
-                  <TableCell className="truncate max-w-[150px]" title={order.courseName || order.courseId}>
+                  <TableCell
+                    className="truncate max-w-[150px]"
+                    title={order.courseName || order.courseId}
+                  >
                     {order.courseName || order.courseId}
                   </TableCell>
                   <TableCell className="truncate max-w-[100px]">
                     {formatCurrency(order.amount)}
                   </TableCell>
-                  <TableCell className="truncate max-w-[100px]">
-                    VNPay
-                  </TableCell>
+                  <TableCell className="truncate max-w-[100px]">VNPay</TableCell>
                   <TableCell>
                     <Select
                       value={order.status.toLowerCase()}
@@ -292,16 +299,12 @@ const PaymentManagement = () => {
                     {formatDate(order.createdAt)}
                   </TableCell>
                   <TableCell className="flex gap-2">
-                    <Button 
-                      variant="ghost" 
-                      size="icon" 
-                      onClick={() => handleViewDetails(order)}
-                    >
+                    <Button variant="ghost" size="icon" onClick={() => handleViewDetails(order)}>
                       <Eye className="h-4 w-4" />
                     </Button>
-                    <Button 
-                      variant="ghost" 
-                      size="icon" 
+                    <Button
+                      variant="ghost"
+                      size="icon"
                       onClick={() => handleDeleteOrder(order.id)}
                       className="text-red-500 hover:text-red-700"
                     >
@@ -313,22 +316,14 @@ const PaymentManagement = () => {
             </TableBody>
           </Table>
           <div className="flex items-center justify-between mt-4">
-            <Button
-              variant="outline"
-              onClick={handlePreviousPage}
-              disabled={pageNumber === 1}
-            >
+            <Button variant="outline" onClick={handlePreviousPage} disabled={pageNumber === 1}>
               <ChevronLeft className="h-4 w-4 mr-2" />
               Trang trước
             </Button>
             <span>
               Trang {pageNumber} / {totalPages}
             </span>
-            <Button
-              variant="outline"
-              onClick={handleNextPage}
-              disabled={pageNumber === totalPages}
-            >
+            <Button variant="outline" onClick={handleNextPage} disabled={pageNumber === totalPages}>
               Trang sau
               <ChevronRight className="h-4 w-4 ml-2" />
             </Button>
@@ -340,26 +335,37 @@ const PaymentManagement = () => {
       {selectedOrder && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-md relative">
-            <button 
-              onClick={closeModal} 
+            <button
+              onClick={closeModal}
               className="absolute top-2 right-2 text-gray-500 hover:text-gray-700"
             >
               <X className="h-6 w-6" />
             </button>
             <h2 className="text-xl font-bold mb-4">Chi tiết đơn hàng</h2>
             <div className="space-y-2">
-              <p><strong>ID:</strong> {selectedOrder.id}</p>
-              <p><strong>Người dùng:</strong> {selectedOrder.userName || selectedOrder.userId}</p>
-              <p><strong>Khóa học:</strong> {selectedOrder.courseName || selectedOrder.courseId}</p>
-              <p><strong>Số tiền:</strong> {formatCurrency(selectedOrder.amount)}</p>
-              <p><strong>Phương thức:</strong> VNPay</p>
-              <p><strong>Trạng thái:</strong> {selectedOrder.status}</p>
-              <p><strong>Ngày tạo:</strong> {formatDate(selectedOrder.createdAt)}</p>
+              <p>
+                <strong>ID:</strong> {selectedOrder.id}
+              </p>
+              <p>
+                <strong>Người dùng:</strong> {selectedOrder.userName || selectedOrder.userId}
+              </p>
+              <p>
+                <strong>Khóa học:</strong> {selectedOrder.courseName || selectedOrder.courseId}
+              </p>
+              <p>
+                <strong>Số tiền:</strong> {formatCurrency(selectedOrder.amount)}
+              </p>
+              <p>
+                <strong>Phương thức:</strong> VNPay
+              </p>
+              <p>
+                <strong>Trạng thái:</strong> {selectedOrder.status}
+              </p>
+              <p>
+                <strong>Ngày tạo:</strong> {formatDate(selectedOrder.createdAt)}
+              </p>
             </div>
-            <Button 
-              className="mt-4 w-full bg-pink-500 hover:bg-pink-600" 
-              onClick={closeModal}
-            >
+            <Button className="mt-4 w-full bg-pink-500 hover:bg-pink-600" onClick={closeModal}>
               Đóng
             </Button>
           </div>

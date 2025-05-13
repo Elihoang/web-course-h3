@@ -125,7 +125,9 @@ const CourseList = () => {
                 }
                 className="w-full h-40 object-cover"
                 alt={course.title}
-                onError={(e) => (e.target.src = 'https://via.placeholder.com/300x160?text=No+Image')}
+                onError={(e) =>
+                  (e.target.src = 'https://via.placeholder.com/300x160?text=No+Image')
+                }
               />
             </div>
             <div className="p-4 flex flex-col flex-grow">

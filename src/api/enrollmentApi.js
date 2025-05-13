@@ -20,19 +20,19 @@ export const getEnrollments = async () => {
   const token = getAuthToken();
   return await api.get(API_URL, {
     headers: {
-      Authorization: `Bearer ${token}`
-    }
+      Authorization: `Bearer ${token}`,
+    },
   });
 };
 
 export const getEnrollmentByUserId = async () => {
   const token = getAuthToken();
   const userId = getUserId();
-  
+
   return await api.get(`${API_URL}/user/${userId}`, {
     headers: {
-      Authorization: `Bearer ${token}`
-    }
+      Authorization: `Bearer ${token}`,
+    },
   });
 };
 
@@ -61,13 +61,13 @@ export const createEnrollment = async (courseId) => {
       {
         UserId: userId,
         CourseId: courseId,
-        Status: "Active"
+        Status: 'Active',
       },
       {
         headers: {
           Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json'
-        }
+          'Content-Type': 'application/json',
+        },
       }
     );
     return response;
@@ -81,22 +81,18 @@ export const createEnrollment = async (courseId) => {
 
 export const updateEnrollment = async (id, data) => {
   const token = getAuthToken();
-  return await api.put(
-    `${API_URL}/${id}`, 
-    data,
-    {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    }
-  );
+  return await api.put(`${API_URL}/${id}`, data, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
 };
 
 export const deleteEnrollment = async (id) => {
   const token = getAuthToken();
   return await api.delete(`${API_URL}/${id}`, {
     headers: {
-      Authorization: `Bearer ${token}`
-    }
+      Authorization: `Bearer ${token}`,
+    },
   });
 };
