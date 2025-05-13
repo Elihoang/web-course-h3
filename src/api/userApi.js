@@ -1,5 +1,5 @@
 import api from './axios';
-
+import {jwtDecode} from 'jwt-decode';
 const API_URL = '/user';
 
 export const getUsers = async () => {
@@ -70,21 +70,38 @@ export const deleteUser = async (id) => {
 // Upload ảnh đại diện
 export const uploadProfileImage = async (file) => {
   const token = localStorage.getItem('authToken');
-  if (!token) throw new Error('Không tìm thấy token');
+  if (!token || typeof token !== 'string' || token.trim() === '') {
+    throw new Error('Token không hợp lệ hoặc không tồn tại');
+  }
+
+  // Loại bỏ "Bearer " nếu có
+  const cleanToken = token.startsWith('Bearer ') ? token.split(' ')[1] : token;
+
+  let decodedToken;
+  try {
+    decodedToken = jwtDecode(cleanToken);
+  } catch (error) {
+    throw new Error('Không thể giải mã token: ' + error.message);
+  }
+
+  const userId = decodedToken.id;
+  if (decodedToken.exp * 1000 < Date.now()) {
+    throw new Error('Token đã hết hạn');
+  }
 
   const formData = new FormData();
   formData.append('file', file);
 
-  const decodedToken = JSON.parse(atob(token.split('.')[1])); // Giải mã JWT để lấy userId
-  const userId = decodedToken.id;
-
-  return await api.post(`${API_URL}/${userId}/upload-profile-image`, formData, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-      'Content-Type': 'multipart/form-data',
-    },
-  });
+  try {
+    const response = await api.post(`${API_URL}/${userId}/upload-profile-image`, formData, {
+      headers: { Authorization: `Bearer ${cleanToken}` },
+    });
+    return response;
+  } catch (error) {
+    throw new Error(error.response?.data?.message || 'Lỗi khi tải ảnh');
+  }
 };
+
 export const updateUserPassword = async (id, passwordData) => {
   const token = localStorage.getItem('authToken');
   if (!token) {
