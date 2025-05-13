@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { getDashboardStats } from '@/api/dashboardApi';
 import { getStudents } from '@/api/studentApi';
 import { getEnrollments } from '@/api/enrollmentApi';
-import { getAllProgress } from '@/api/progressApi'; // Thêm import này
+import { getAllProgress } from '@/api/progressApi'; 
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import {
   Users,
@@ -42,7 +42,7 @@ const Dashboard = () => {
   const [courses, setCourses] = useState([]);
   const [students, setStudents] = useState([]);
   const [enrollments, setEnrollments] = useState([]);
-  const [progresses, setProgresses] = useState([]); // Thêm state cho tiến trình
+  const [progresses, setProgresses] = useState([]);
   const [loading, setLoading] = useState(true);
 
   // Dữ liệu mẫu cho biểu đồ LineChart
